@@ -2,28 +2,27 @@
 
 ![Podgląd Raportu](dashboard_preview.png)
 
-## 📌 O projekcie
-Cześć! To mój projekt przygotowany w ramach wyzwania analitycznego #BI_NGO. Zamiast analizować Wikipedię jako zwykłą encyklopedię, podszedłem do niej jak do klasycznego produktu cyfrowego w modelu SaaS. 
+Cześć! To mój projekt analityczny przygotowany w ramach wyzwania #BI_NGO. Zamiast analizować Wikipedię jako zwykłą bazę wiedzy, potraktowałem ją jak klasyczny produkt cyfrowy (SaaS). 
 
-Skupiłem się na przebadaniu lejka zaangażowania twórców (edytorów). Chciałem sprawdzić, jak na przestrzeni lat wyglądała akwizycja nowych kont, ilu z tych użytkowników faktycznie było aktywnych (MAU) i jak wyglądał wskaźnik ich retencji.
+Sprawdziłem, jak na przestrzeni kilkunastu lat wyglądało pozyskiwanie nowych twórców, ilu z nich faktycznie edytowało artykuły (MAU) i jak radzono sobie z ich utrzymaniem.
 
-## 🛠 Wykorzystane technologie
+## Wykorzystane technologie
 * **Wizualizacja:** Microsoft Power BI
 * **Przygotowanie danych (ETL):** Python (Pandas)
 * **Logika i zapytania:** DAX, SQL
 
-## 🏗 Architektura danych i DAX
-Zależało mi na tym, żeby raport działał płynnie i był odporny na błędy użytkownika:
-* **Model Gwiazdy (Star Schema):** Oddzieliłem tabele faktów (rejestracje, edycje) od tabel wymiarów (zbudowałem osobną, rozbudowaną tabelę Kalendarza). Dzięki temu filtrowanie po datach działa bez opóźnień i błędów w kalkulacjach.
-* **Czysty UX w miarach DAX:** Spędziłem trochę czasu nad obsługą pustych wartości (tzw. edge cases). Moja miara `MAU YoY %` wykorzystuje funkcję `HASONEVALUE`. Jeśli użytkownik nie wybierze konkretnego roku na filtrze, raport nie wypluwa technicznych błędów typu `NaN` czy `(Puste)`, tylko elegancko wyświetla pauzę lub prosi o wybór daty.
+## Architektura danych i DAX
+Zależało mi na wydajności i odporności raportu na błędy (tzw. defensive programming):
+* **Model Gwiazdy (Star Schema):** Rozdzieliłem tabele faktów od wymiarów i zbudowałem dedykowaną tabelę Kalendarza. Dzięki temu filtrowanie po datach działa płynnie.
+* **Czysty interfejs w DAX:** Zabezpieczyłem raport przed wyświetlaniem technicznych błędów. Miara `MAU YoY %` wykorzystuje funkcję `HASONEVALUE` – jeśli użytkownik nie wybierze roku, raport po prostu prosi o jego wskazanie, zamiast rzucać błędem `NaN`. Podobnie obsłużyłem puste miesiące używając wartości `BLANK()`, by wykresy liniowe urywały się naturalnie na ostatnim aktywnym okresie, zamiast sztucznie pikować do zera na końcu osi czasu.
 
-## 🎨 UI/UX i praca z Brand Bookiem
-Raport w 100% opiera się na oficjalnym Brand Booku Wikimedii. Zamiast dobierać kolory na oko, wdrożyłem konkretne wymogi klienta:
-* **Kolorystyka:** Zrezygnowałem z domyślnych palet Power BI na rzecz dokładnych kodów HEX (Główny niebieski: `#0C57A8`, Szary: `#7F7F7F`, Tekst: `#404040`).
-* **Typografia (Custom JSON):** Power BI domyślnie nie obsługuje oficjalnej czcionki fundacji. Aby to obejść, napisałem własny plik konfiguracyjny `.json` z motywem, który wymusił globalne użycie fontu **Montserrat** dla wszystkich nagłówków i wskaźników KPI.
-* **Układ:** Zastosowałem klasyczny "F-Pattern" – logotypy i najważniejsze metryki zagregowane są na samej górze, a szczegółowe trendy na dole.
+## UI/UX i praca z Brand Bookiem
+Raport jest w 100% zgodny z oficjalnym Brand Bookiem Wikimedii. Zrezygnowałem z domyślnych motywów Power BI:
+* **Kolorystyka:** Użyłem sztywnych kodów HEX (Niebieski: `#0C57A8`, Szary: `#7F7F7F`, Tekst: `#404040`).
+* **Typografia (Custom JSON):** Power BI domyślnie nie wspiera oficjalnego fontu fundacji (Montserrat). Żeby to obejść, napisałem własny motyw `.json`, który wymusił tę czcionkę na wszystkich nagłówkach i wskaźnikach KPI.
+* **Układ:** Postawiłem na klasyczny F-Pattern. Najważniejsze liczby i logotypy rzucają się w oczy od razu na górze, a szczegółowe trendy są zagregowane poniżej.
 
-## 📊 Co wynika z danych? (Wniosek makro)
-* **Złote lata platformy:** Największe zaangażowanie twórców na polskiej Wikipedii przypada na lata 2007-2009. Potem widać długoletni, konsekwentny trend spadkowy.
-* **Anomalia 2020:** Ten spadek został przerwany w zasadzie tylko raz – w 2020 roku przez globalną pandemię. Wskaźnik MAU YoY podskoczył wtedy o 6,27%, a średnia liczba edycji na użytkownika wróciła do bardzo stabilnych poziomów.
-* **Wnioski biznesowe:** Rok 2020 udowodnił, że użytkownicy mają czas na edytowanie, gdy znikają inne rozpraszacze. Aby dzisiaj skutecznie konkurować z social mediami o czas twórców, platforma potrzebuje całkowicie przedefiniować sposób ich angażowania i prawdopodobnie wprowadzić nowe mechanizmy grywalizacji, które odtworzą tę motywację w normalnych warunkach.
+## Co wynika z danych?
+* **Historyczny szczyt:** Największy ruch i zaangażowanie edytorów na polskiej Wikipedii to lata 2007-2009. Od tego momentu widać długi, stały trend spadkowy.
+* **Anomalia 2020:** Ten spadek przerwał w zasadzie tylko rok 2020 (globalna pandemia). Wskaźnik MAU podskoczył wtedy o 6,27%, a średnia edycji na użytkownika mocno wystrzeliła w górę.
+* **Wniosek biznesowy:** Dane z 2020 roku udowadniają, że ludzie chcą edytować Wikipedię, gdy mają na to czas i znikają inne rozpraszacze. Żeby dzisiaj skutecznie walczyć o czas twórców z algorytmami social mediów, platforma prawdopodobnie potrzebuje nowych mechanizmów angażowania (np. grywalizacji), bo stary model oparty wyłącznie na pasji powoli się wyczerpuje.
