@@ -18,8 +18,8 @@ Zależało mi na wydajności i odporności raportu na błędy (tzw. defensive pr
 
 ## UI/UX i praca z Brand Bookiem
 Raport jest w 100% zgodny z oficjalnym Brand Bookiem Wikimedii. Zrezygnowałem z domyślnych motywów Power BI:
-* **Kolorystyka:** Użyłem sztywnych kodów HEX (Niebieski: #0C57A8, Jasnoszary: #7F7F7F, Ciemnoszary: #404040).
-* **Typografia (Custom JSON):** Power BI domyślnie nie wspiera oficjalnego fontu fundacji (Montserrat). Żeby to obejść, napisałem własny motyw `.json`, który wymusił tę czcionkę na wszystkich nagłówkach i wskaźnikach KPI.
+* **Kolorystyka:** Użyłem sztywnych kodów HEX (Niebieski: `#0C57A8`, Jasnoszary: `#7F7F7F`, Ciemnoszary: `#404040`).
+* **Typografia (Custom JSON):** Power BI domyślnie nie wspiera oficjalnego fontu fundacji (Montserrat). Żeby to obejść, zaimplementowałem zewnętrzny motyw `.json`, który po zaimportowaniu wymusił tę czcionkę na wszystkich nagłówkach i wskaźnikach KPI.
 * **Układ:** Postawiłem na klasyczny F-Pattern. Najważniejsze liczby i logotypy rzucają się w oczy od razu na górze, a szczegółowe trendy są zagregowane poniżej.
 
 ## Co wynika z danych?
